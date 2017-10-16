@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Homework Two Suite">
+	<parameter name="key" value="AMBIENTE2" />
+	<parameter name="numberOne" value="15" />
+	<parameter name="numberTwo" value="5" />
+	<parameter name="year" value="1990" />
+	<parameter name="month" value="6" />
+	<parameter name="day" value="24" />
+	<test name="Homework Two Tests">
+		<groups>
+			<run>
+				<include name="Smoke" />
+				<include name="Regression" />
+			</run>
+		</groups>
+		<classes>
+			<class name="com.trainingtae.TareaDos.ExerciseTest" />
+		</classes>
+	</test>
+
+</suite>
+				
