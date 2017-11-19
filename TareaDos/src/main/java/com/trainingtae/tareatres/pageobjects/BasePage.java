@@ -6,21 +6,21 @@ import org.openqa.selenium.support.PageFactory;
 
 public class BasePage {
 
-	public WebDriver driver;
+	private WebDriver driver;
 	
-	public BasePage(){
-		if(driver == null){
-			driver = new FirefoxDriver();
-		}
-		PageFactory.initElements(driver, this);
+	public BasePage(WebDriver pDriver){
+		PageFactory.initElements(pDriver, this);
+		driver = pDriver;
 	}
-
+	
 	public WebDriver getDriver(){
 		return driver;
 	}
-	
-	private void goToPage(final String url) {
-        driver.get(url);
-    }
+
+	public void dispose(){
+		if (driver != null){
+			driver.quit();
+		}
+	}
 	
 }
