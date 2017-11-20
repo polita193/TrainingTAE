@@ -8,19 +8,18 @@ public class BasePage {
 
 	private WebDriver driver;
 	
-	public BasePage(WebDriver pDriver){
-		PageFactory.initElements(pDriver, this);
-		driver = pDriver;
+	public BasePage(WebDriver driver){
+		PageFactory.initElements(driver, this);
+		this.driver = driver;
 	}
 	
 	public WebDriver getDriver(){
-		return driver;
+		return this.driver;
 	}
 
 	public void dispose(){
-		if (driver != null){
-			driver.quit();
+		if (this.driver != null){
+			this.driver.quit();
 		}
-	}
-	
+	}	
 }
