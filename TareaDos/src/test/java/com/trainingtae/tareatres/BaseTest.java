@@ -13,7 +13,7 @@ public class BaseTest {
 
 	private MyDriver myDriver;
 	private HomePage homePage;
-	public Browser browserType = Browser.FIREFOX;
+	public Browser browserType = Browser.CHROME;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -21,6 +21,7 @@ public class BaseTest {
 		homePage = new HomePage(myDriver.getDriver());
 	}
 
+	
 	public void afterMethod() {
 		homePage.dispose();
 	}

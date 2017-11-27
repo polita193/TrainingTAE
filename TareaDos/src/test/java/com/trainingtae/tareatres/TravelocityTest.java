@@ -13,7 +13,7 @@ import com.trainingtae.tareatres.pageobjects.TripDetailPage;
 
 public class TravelocityTest extends BaseTest {
 
-	@Test
+	@Test(enabled=false)
 	public void bookFlightTest() {
 		HomePage homepage = getHomePage();
 		FlightResultsPage flightResultsPage = homepage.bookFlight("LAS", "LAX");
@@ -34,6 +34,12 @@ public class TravelocityTest extends BaseTest {
 		Assert.assertTrue(travelerInfoPage.summaryTripInfoISPresent());
 	}
 
+	@Test(enabled=true)
+	public void bookHotelTest(){
+		HomePage homepage = getHomePage();
+		homepage.bookHotel("Montevideo, Uruguay");
+	}
+	
 	private List<String> getExpectedList() {
 		List<String> expectedList = new ArrayList<String>();
 		expectedList.add("Price");
