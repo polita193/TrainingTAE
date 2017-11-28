@@ -8,6 +8,7 @@ import org.testng.Assert;
 
 import com.trainingtae.tareatres.pageobjects.FlightResultsPage;
 import com.trainingtae.tareatres.pageobjects.HomePage;
+import com.trainingtae.tareatres.pageobjects.HotelResultsPage;
 import com.trainingtae.tareatres.pageobjects.TravelerInfoPage;
 import com.trainingtae.tareatres.pageobjects.TripDetailPage;
 
@@ -37,7 +38,16 @@ public class TravelocityTest extends BaseTest {
 	@Test(enabled=true)
 	public void bookHotelTest(){
 		HomePage homepage = getHomePage();
-		homepage.bookHotel("Montevideo, Uruguay");
+		HotelResultsPage hotelResultsPage = homepage.bookHotel("Montevideo, Uruguay");
+		Assert.assertTrue(hotelResultsPage.getDiscountWithEmail());
+		Assert.assertTrue(hotelResultsPage.validateSponsored());		
+	}
+	
+	@Test(enabled=false)
+	public void bookFlightAndHotel(){
+		HomePage homepage = getHomePage();
+		homepage.bookPackage("LAS", "LAX");
+		Assert.assertEquals(homepage.validateErrorMessage(), "Your partial check-in and check-out dates must fall within your arrival and departure dates. Please review your dates.");
 	}
 	
 	private List<String> getExpectedList() {

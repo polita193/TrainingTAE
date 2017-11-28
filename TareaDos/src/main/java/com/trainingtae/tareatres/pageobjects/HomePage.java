@@ -1,12 +1,11 @@
 package com.trainingtae.tareatres.pageobjects;
 
+import java.util.List;
 import org.openqa.selenium.By;
-import org.openqa.selenium.By.ByXPath;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.FindBys;
 
 public class HomePage extends BasePage {
 
@@ -18,6 +17,9 @@ public class HomePage extends BasePage {
 	@FindBy(id="tab-hotel-tab-hp")
 	private WebElement hotelTab;
 
+	@FindBy(id="tab-package-tab-hp")
+	private WebElement packageTab;
+	
 	@FindBy(id="flight-type-roundtrip-label-hp-flight")
 	private WebElement roundtripLabel;
 
@@ -41,16 +43,40 @@ public class HomePage extends BasePage {
 	
 	@FindBy(id="hotel-checkout-hp-hotel")
 	private WebElement hotelCheckOutDate;
+	
+	@FindBy(id="package-origin-hp-package")
+	private WebElement packageOrigin;
+	
+	@FindBy(id="package-destination-hp-package")
+	private WebElement packageDestination;
+	
+	@FindBy(id="package-departing-hp-package")
+	private WebElement packageDepartingDate;
+	
+	@FindBy(id="package-returning-hp-package")
+	private WebElement packageReturningDate;
+	
+	@FindBy(id="partialHotelBooking-hp-package")
+	private WebElement partialHotel;
+	
+	@FindBy(id="package-checkin-hp-package")
+	private WebElement packageCheckInDate;
 
+	@FindBy(id="package-checkout-hp-package")
+	private WebElement packageCheckOutDate;
+	
+	@FindBy(className="error-link")
+	private WebElement errorMessage;
+	
 	@FindBy(className="datepicker-next")
 	private WebElement nextMonth;
 
 	@FindBy(className="datepicker-day-number")
 	private WebElement day;
 	
-	@FindBy(className="gcw-submit")
-	private WebElement searchButton;
-
+	@FindBys({@FindBy(className="gcw-submit")})
+	private List<WebElement> searchButton;
+	
 	public HomePage(WebDriver driver) {
 		super(driver);
 		goToPage(driver);
@@ -61,23 +87,35 @@ public class HomePage extends BasePage {
 		selectRoundtripLabel();
 		enterFlightOrigin(origin);
 		enterFlightDestination(destination);
-		selectDepartingDate();
-		selectReturningDate();
-		search();
+		selectFltDepartingDate();
+		selectFltReturningDate();
+		searchFlight();
 		return new FlightResultsPage(getDriver());
 	}
 	
-	public void bookHotel(String destination) {
+	public HotelResultsPage bookHotel(String destination) {
 		selectHotelTab();
 		enterHotelDestination(destination);
 		selectCheckInDate();
 		selectCheckOutDate();
-		search();
+		searchHotel();
+		return new HotelResultsPage(getDriver());
 	}
 	
+	public void bookPackage(String origin, String destination){
+		selectPackageTab();
+		enterPackageOrigin(origin);
+		enterPackageDestination(destination);
+		selectPkgDepartingDate();
+		selectPkgReturningDate();
+		checkPartialHotel();
+		selectPkgCheckInDate();
+		selectPkgCheckOutDate();
+		searchPackage();
+	}
+
 	private void goToPage(WebDriver driver) {
 		driver.get(URL);
-		driver.manage().window().maximize();
 	}
 
 	private void selectFlightTab() {
@@ -96,22 +134,21 @@ public class HomePage extends BasePage {
 		flightDestination.sendKeys(destination);
 	}
 
-	private void selectDepartingDate() {
+	private void selectFltDepartingDate() {
 		flightDepartingDate.click();
 		nextMonth.click();
 		nextMonth.click();
 		day.click();
 	}
 
-	private void selectReturningDate() {
+	private void selectFltReturningDate() {
 		flightReturningDate.click();
 		nextMonth.click();
 		day.click();
 	}
 	
-	private void search(){
-		getWait().until(ExpectedConditions.visibilityOf(searchButton));
-		searchButton.click();
+	private void searchFlight(){
+		searchButton.get(0).click();
 	}
 	
 	private void selectHotelTab() {
@@ -120,7 +157,6 @@ public class HomePage extends BasePage {
 
 	private void enterHotelDestination(String destination) {
 		hotelDestination.sendKeys(destination);
-		hotelDestination.sendKeys(Keys.TAB);
 	}
 	
 	private void selectCheckInDate() {
@@ -135,6 +171,57 @@ public class HomePage extends BasePage {
 		getDriver().findElement(By.xpath("//button[contains(@data-day,'5')]")).click();
 	}
 	
+	private void searchHotel(){
+		searchButton.get(1).click();	
+	}
+	
+	private void selectPackageTab() {
+	 packageTab.click();	
+	}
+	
+	private void enterPackageOrigin(String origin) {
+		packageOrigin.sendKeys(origin);
+	}
+	
+	private void enterPackageDestination(String destination) {
+		packageDestination.sendKeys(destination);
+	}
+	
+	private void selectPkgDepartingDate(){
+		packageDepartingDate.click();
+		nextMonth.click();
+		nextMonth.click();
+		day.click();
+	}
+	
+	private void selectPkgReturningDate(){
+		packageReturningDate.click();
+		getDriver().findElement(By.xpath("//button[contains(@data-day,'5')]")).click();
+	}
+
+	private void checkPartialHotel() {
+		if(!partialHotel.isSelected())
+			partialHotel.click();
+	}
+	
+	private void selectPkgCheckInDate(){
+		packageCheckInDate.click();
+		getDriver().findElement(By.xpath("//button[contains(@data-day,'6')]")).click();
+	}
+	
+	private void selectPkgCheckOutDate(){
+		packageCheckOutDate.click();
+		getDriver().findElement(By.xpath("//button[contains(@data-day,'8')]")).click();
+	}
+	
+	private void searchPackage(){
+		searchButton.get(2).click();	
+	}
+	
+	public String validateErrorMessage() {
+		return errorMessage.getText();
+	}
+
 	public String getURL() {
 		return URL;
 	}
@@ -169,9 +256,5 @@ public class HomePage extends BasePage {
 
 	public WebElement getDay() {
 		return day;
-	}
-
-	public WebElement getSearchButton() {
-		return searchButton;
 	}
 }
