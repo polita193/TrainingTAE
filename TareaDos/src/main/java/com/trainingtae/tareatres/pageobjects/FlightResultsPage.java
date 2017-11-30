@@ -11,6 +11,8 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.trainingtae.tareatres.CarResulstPage;
+
 public class FlightResultsPage extends BasePage {
 
 	@FindBy(name="sort")
@@ -72,22 +74,21 @@ public class FlightResultsPage extends BasePage {
 
 	public boolean sortByDurationAsc() {
 		sort.selectByValue("duration:asc");
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultList)));
 		return validateSorting();
 	}
 
 	private boolean validateSorting() {
-		boolean ordered = false;
-		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultList)));
+		int count = 0;
 		WebElement base = flightResultList.get(0).findElement(By.xpath(xpathDuration));
 		for (WebElement w : flightResultList) {
 			WebElement value = w.findElement(By.xpath(xpathDuration));
 			if (getDuration(base.getText()) <= getDuration((value.getText()))) {
-				ordered = true;
 				base = value;
-			} else
-				ordered = false;
+				count++;
+			}
 		}
-		return ordered;
+		return count == flightResultList.size();
 	}
 
 	private int getDuration(String text) {
@@ -98,12 +99,22 @@ public class FlightResultsPage extends BasePage {
 	}
 
 	public TripDetailPage pickFlights() {
-		flightResultList.get(0).findElement(By.xpath(xpathSelectButton)).click();
-		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultList)));
-		flightResultList.get(3).findElement(By.xpath(xpathSelectButton)).click();
+		selectFlightByposition(0);
+		selectFlightByposition(3);
 		return new TripDetailPage(getDriver());
 	}
-
+	
+	public CarResulstPage pickPkgFlightsFHC() {
+		selectFlightByposition(0);
+		selectFlightByposition(0);
+		return new CarResulstPage(getDriver());
+	}
+	
+	private void selectFlightByposition(int pos){
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultList)));
+		flightResultList.get(pos).findElement(By.xpath(xpathSelectButton)).click();
+	}
+	
 	public WebElement getSortOption() {
 		return sortOption;
 	}
@@ -111,5 +122,4 @@ public class FlightResultsPage extends BasePage {
 	public List<WebElement> getFlightResultList() {
 		return flightResultList;
 	}
-
 }

@@ -30,4 +30,16 @@ public class HotelResultsPage extends BasePage {
 		toggleDiscount.click();
 		return emailField.isDisplayed();
 	}
+	
+	public WebElement getToggleDiscount() {
+		return toggleDiscount;
+	}
+
+	public WebElement getEmailField() {
+		return emailField;
+	}
+
+	public WebElement getSponsored() {
+		return sponsored;
+	}
 }
