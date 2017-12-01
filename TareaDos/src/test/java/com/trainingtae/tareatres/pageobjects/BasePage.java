@@ -14,7 +14,7 @@ public class BasePage {
 	private WebDriverWait wait;
 	private int TIME_TO_WAIT = 15;
 	
-	public BasePage(WebDriver driver){
+	public BasePage(final WebDriver driver){
 		PageFactory.initElements(driver, this);
 		wait = new WebDriverWait(driver, TIME_TO_WAIT);
 		this.driver = driver;

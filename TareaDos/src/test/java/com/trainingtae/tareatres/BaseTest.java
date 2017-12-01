@@ -19,6 +19,7 @@ public class BaseTest {
 		homePage = new HomePage(myDriver.getDriver());
 	}
 
+	@AfterMethod
 	public void afterMethod() {
 		homePage.dispose();
 	}

@@ -11,8 +11,6 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-import com.trainingtae.tareatres.CarResulstPage;
-
 public class FlightResultsPage extends BasePage {
 
 	@FindBy(name="sort")

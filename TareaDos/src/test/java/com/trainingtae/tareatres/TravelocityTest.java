@@ -1,15 +1,19 @@
 package com.trainingtae.tareatres;
 
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.Assert;
 
+import com.trainingtae.tareatres.pageobjects.CarResulstPage;
 import com.trainingtae.tareatres.pageobjects.CruiseResultsPage;
 import com.trainingtae.tareatres.pageobjects.FlightResultsPage;
 import com.trainingtae.tareatres.pageobjects.HomePage;
 import com.trainingtae.tareatres.pageobjects.HotelResultsPage;
+import com.trainingtae.tareatres.pageobjects.PackageDetailInfoPage;
 import com.trainingtae.tareatres.pageobjects.PkgHotelResultPage;
 import com.trainingtae.tareatres.pageobjects.SelectedHotelPage;
 import com.trainingtae.tareatres.pageobjects.TravelerInfoPage;
@@ -17,8 +21,9 @@ import com.trainingtae.tareatres.pageobjects.TripDetailPage;
 
 public class TravelocityTest extends BaseTest {
 
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void bookFlightTest() {
+		
 		HomePage homepage = getHomePage();
 		FlightResultsPage flightResultsPage = homepage.bookFlight("LAS", "LAX");
 		Assert.assertTrue(getExpectedList().containsAll(flightResultsPage.getSortingOptions()));
@@ -50,7 +55,7 @@ public class TravelocityTest extends BaseTest {
 		//
 		FlightResultsPage flightResultsPage = selectedHotelPage.selectFirstRoom();
 		CarResulstPage carResultsPage = flightResultsPage.pickPkgFlightsFHC();
-		PackageDetailInfo packageDetailInfo = carResultsPage.selectCar();
+		PackageDetailInfoPage packageDetailInfo = carResultsPage.selectCar();
 		//
 		//
 		//
@@ -58,7 +63,7 @@ public class TravelocityTest extends BaseTest {
 		//
 	}
 
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void bookHotelTest(){
 		HomePage homepage = getHomePage();
 		HotelResultsPage hotelResultsPage = homepage.bookHotel("Montevideo, Uruguay");
@@ -66,14 +71,14 @@ public class TravelocityTest extends BaseTest {
 		Assert.assertTrue(hotelResultsPage.validateSponsored());		
 	}
 
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void bookFHPackageTest(){
 		HomePage homepage = getHomePage();
-		homepage.bookFHPackage("LAS", "LAX");
-		Assert.assertEquals(homepage.validateErrorMessage(), "Your partial check-in and check-out dates must fall within your arrival and departure dates. Please review your dates.");
+		String errorMessage = homepage.bookFHPackage("LAS", "LAX");
+		Assert.assertEquals(errorMessage, "Your partial check-in and check-out dates must fall within your arrival and departure dates. Please review your dates.");
 	}
 
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void bookCruiseTest(){
 		String destination = "Europe";
 		String month = "Jun 2018";
