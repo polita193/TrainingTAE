@@ -22,7 +22,9 @@ public class PkgHotelResultPage extends BasePage {
 
 	@FindBy(className="pagination-next")
 	private WebElement nextPage;
-	
+
+	private static final int RESULTS_NUMBER =  50;
+
 	public PkgHotelResultPage(WebDriver driver) {
 		super(driver);
 	}
@@ -41,7 +43,7 @@ public class PkgHotelResultPage extends BasePage {
 
 	private boolean validateSorting() {
 		int count = 0;
-		getWait().until(ExpectedConditions.visibilityOfAllElements(hotelResults));
+		getWait().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//article"), RESULTS_NUMBER));
 		WebElement base = hotelResults.get(0).findElement(By.className("actualPrice"));
 		for (WebElement w : hotelResults) {
 			WebElement value = w.findElement(By.className("actualPrice"));
@@ -50,29 +52,40 @@ public class PkgHotelResultPage extends BasePage {
 				count++;
 			}
 		}
-		System.out.println("count es"+ count+ "y la lista es"+hotelResults.size());
 		return count == hotelResults.size();
 	}
 
 	private int getPrice(String text) {
 		text = text.replace("$", "");
+		text = text.replace(",", "");
 		return Integer.parseInt(text);
 	}
 
-	public SelectedHotelPage selectHotelThreeStars() {
+	public SelectedHotelPage selectHotelMoreThanXStars(float starsNumber) {
 		WebElement selectedHotel = null;
 		while(selectedHotel == null){
-			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(hotelResults)));
-			for (WebElement w : hotelResults) {
-				if(getStarRating(w.findElement(By.className("star-rating")).getText()) >= 3.0){
-					selectedHotel = w;
-				}
+			selectedHotel = findHotel(starsNumber);
+			if(selectedHotel != null){
+				selectedHotel.click();
 			}
-			nextPage.click();
+			else nextPage.click();
 		}
-		selectedHotel.click();
 		return new SelectedHotelPage(getDriver());
 	}
+
+	private WebElement findHotel(float starsNumber){
+		WebElement selectedHotel = null;
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(hotelResults)));
+		for (WebElement w : hotelResults) {
+			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.presenceOfElementLocated(By.xpath("//article"))));
+			if(getStarRating(w.findElement(By.className("star-rating")).getText()) >= starsNumber){
+				selectedHotel = w;
+			}
+		}
+		return selectedHotel;
+	}
+
+
 
 	private float getStarRating(String text){
 		text = text.replace(" out of 5.0", "");

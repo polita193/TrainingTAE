@@ -27,5 +27,4 @@ public class BaseTest {
 	public HomePage getHomePage() {
 		return homePage;
 	}
-
 }

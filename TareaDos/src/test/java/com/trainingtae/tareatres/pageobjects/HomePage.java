@@ -1,13 +1,8 @@
 package com.trainingtae.tareatres.pageobjects;
 
-import java.util.List;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 
 public class HomePage extends BasePage {
 
@@ -15,13 +10,13 @@ public class HomePage extends BasePage {
 
 	@FindBy(id="tab-flight-tab-hp")
 	private WebElement flightTab;
-	
+
 	@FindBy(id="tab-hotel-tab-hp")
 	private WebElement hotelTab;
 
 	@FindBy(id="tab-package-tab-hp")
 	private WebElement packageTab;
-	
+
 	@FindBy(id="tab-cruise-tab-hp")
 	private WebElement cruiseTab;
 
@@ -72,7 +67,7 @@ public class HomePage extends BasePage {
 		hotelTab.click();
 		return new HotelTabPage(getDriver());
 	}
-	
+
 	private PackageTabPage selectPackageTab() {
 		packageTab.click();
 		return new PackageTabPage(getDriver());	
@@ -82,7 +77,7 @@ public class HomePage extends BasePage {
 		cruiseTab.click();
 		return new CruiseTabPage(getDriver());	
 	}
-	
+
 	public String getURL() {
 		return URL;
 	}

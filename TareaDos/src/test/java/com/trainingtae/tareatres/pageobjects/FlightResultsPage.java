@@ -43,31 +43,31 @@ public class FlightResultsPage extends BasePage {
 
 	public boolean selectButtonIsPresent() {
 		closePopUpWindow();
-		boolean present = false;
+		int count = 0;
 		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultList)));
 		for (WebElement w : flightResultList) {
 			if (w.findElement(By.xpath(xpathSelectButton)).isDisplayed())
-			present = true;
+			count++;
 		}
-		return present;
+		return count == flightResultList.size();
 	}
 
 	public boolean flightDurationIsPresent() {
-		boolean present = false;
+		int count = 0;
 		for (WebElement w : flightResultList) {
 			if (w.findElement(By.xpath(xpathDuration)).isDisplayed())
-			present = true;
+			count++;
 		}
-		return present;
+		return count == flightResultList.size();
 	}
 
 	public boolean detailsAndFeeIsPresent() {
-		boolean present = false;
+		int count = 0;
 		for (WebElement w : flightResultList) {
 			if (w.findElement(By.xpath(xpathDetailsAndFee)).isDisplayed())
-			present = true;
+			count++;
 		}
-		return present;
+		return count == flightResultList.size();
 	}
 
 	public boolean sortByDurationAsc() {

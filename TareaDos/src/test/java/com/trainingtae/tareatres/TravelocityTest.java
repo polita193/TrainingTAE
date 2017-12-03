@@ -1,7 +1,6 @@
 package com.trainingtae.tareatres;
 
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class TravelocityTest extends BaseTest {
 
 	@Test(enabled=true)
 	public void bookFlightTest() {
-		
+
 		HomePage homepage = getHomePage();
 		FlightResultsPage flightResultsPage = homepage.bookFlight("LAS", "LAX");
 		Assert.assertTrue(getExpectedList().containsAll(flightResultsPage.getSortingOptions()));
@@ -49,18 +48,18 @@ public class TravelocityTest extends BaseTest {
 		PkgHotelResultPage pkgHotelResultsPage = homepage.bookFHCarPackage("LAS", "LAX");
 		Assert.assertTrue(pkgHotelResultsPage.searchByNameFieldIsPresent());
 		Assert.assertTrue(pkgHotelResultsPage.validateSortingByPrice());
-		SelectedHotelPage selectedHotelPage = pkgHotelResultsPage.selectHotelThreeStars();
+		SelectedHotelPage selectedHotelPage = pkgHotelResultsPage.selectHotelMoreThanXStars(3);
 		Assert.assertTrue(selectedHotelPage.validateStars() >= 3);
-		//
-		//
+		Assert.assertTrue(selectedHotelPage.selectButtonIsPresent());
+		Assert.assertTrue(selectedHotelPage.hotelDescriptionIsPresent());
 		FlightResultsPage flightResultsPage = selectedHotelPage.selectFirstRoom();
 		CarResulstPage carResultsPage = flightResultsPage.pickPkgFlightsFHC();
 		PackageDetailInfoPage packageDetailInfo = carResultsPage.selectCar();
-		//
-		//
-		//
-		//
-		//
+		Assert.assertEquals(packageDetailInfo.getQuestionTitle1(), "Who's flying?");
+		Assert.assertTrue(packageDetailInfo.contacNameFieldIsPresent());
+		Assert.assertTrue(packageDetailInfo.creditCardNumberIspresent());
+		Assert.assertTrue(packageDetailInfo.emailFieldIsPresent());
+		Assert.assertTrue(packageDetailInfo.completeBookingIsPresent());
 	}
 
 	@Test(enabled=true)
@@ -86,8 +85,9 @@ public class TravelocityTest extends BaseTest {
 		CruiseResultsPage cruiseResultsPage = homePage.bookCruise(destination, month);
 		Assert.assertTrue(cruiseResultsPage.validateCruiseFilter(destination, month));
 		Assert.assertTrue(cruiseResultsPage.isLengthFilterSelected());
-		//Assert.assertTrue(cruiseResultsPage.validateCruiseListDiscount());
-		//cruiseResultsPage.selectCruiseWithMoreDiscount();
+		Assert.assertTrue(cruiseResultsPage.validateCruiseListDiscount());
+		cruiseResultsPage.selectCruiseWithMoreDiscount();
+		Assert.assertTrue(cruiseResultsPage.sailingListIsPresent());
 	}
 
 	private List<String> getExpectedList() {
